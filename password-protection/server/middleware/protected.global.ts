@@ -8,18 +8,6 @@ export default defineEventHandler(async (event) => {
     return
   }
 
-  const path = event.path
-
-  if (
-    path.startsWith('/api/__protected') ||
-    path.startsWith('/__protected') ||
-    path.startsWith('/_nuxt') ||
-    path.startsWith('/__nuxt') ||
-    path.startsWith('/favicon.ico')
-  ) {
-    return
-  }
-
   const sessionToken = getCookie(event, 'nuxt-protected')
 
   if (!sessionToken) {
