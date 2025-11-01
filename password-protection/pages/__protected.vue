@@ -1,24 +1,68 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: 'nuxt-protected'
+})
+
+const password = ref<string>('')
+const error = ref<string>('')
+
+const handleSubmit = async () => {
+  error.value = ''
+
+  try {
+    const response = await $fetch('/api/__protected/verify', {
+      method: 'POST',
+      body: {
+        password: password.value
+      }
+    })
+
+    if (response.success) {
+      await navigateTo('/')
+    }
+  } catch (err: any) {
+    error.value = err.data?.message || 'Invalid password. Please try again.'
+    password.value = ''
+  }
+}
+</script>
+
 <template>
   <div class="auth-container">
     <div class="auth-card-wrapper">
       <div class="auth-card">
         <div class="top-section">
           <div class="logo-container">
-            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M39.5704 17.3298L25.114 42.2778C22.7137 46.42 18.2779 48.9717 13.4776 48.9717C3.13377 48.9717 -3.33105 37.8144 1.84107 28.8887L11.3597 12.462C12.2324 10.956 13.8451 10.0283 15.5904 10.0283H15.5927C19.3534 10.0283 21.7038 14.0848 19.8233 17.3298L10.3036 33.758C8.89266 36.1928 10.6562 39.2365 13.4779 39.2365C14.7874 39.2365 15.9974 38.5404 16.6522 37.4104L31.1092 12.462C31.9819 10.956 33.5946 10.0283 35.3398 10.0283C39.1004 10.0283 41.4509 14.0847 39.5704 17.3298Z" fill="black"/>
-              <path d="M59.3175 17.3298L42.3923 46.538C41.5197 48.044 39.907 48.9717 38.1617 48.9717C34.401 48.9717 32.0507 44.9152 33.9311 41.6702L50.8563 12.462C51.7289 10.956 53.3416 10.0283 55.0869 10.0283C58.8475 10.0283 61.1979 14.0847 59.3175 17.3298Z" fill="black"/>
+            <svg
+              width="60"
+              height="60"
+              viewBox="0 0 60 60"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M39.5704 17.3298L25.114 42.2778C22.7137 46.42 18.2779 48.9717 13.4776 48.9717C3.13377 48.9717 -3.33105 37.8144 1.84107 28.8887L11.3597 12.462C12.2324 10.956 13.8451 10.0283 15.5904 10.0283H15.5927C19.3534 10.0283 21.7038 14.0848 19.8233 17.3298L10.3036 33.758C8.89266 36.1928 10.6562 39.2365 13.4779 39.2365C14.7874 39.2365 15.9974 38.5404 16.6522 37.4104L31.1092 12.462C31.9819 10.956 33.5946 10.0283 35.3398 10.0283C39.1004 10.0283 41.4509 14.0847 39.5704 17.3298Z"
+                fill="black" />
+              <path
+                d="M59.3175 17.3298L42.3923 46.538C41.5197 48.044 39.907 48.9717 38.1617 48.9717C34.401 48.9717 32.0507 44.9152 33.9311 41.6702L50.8563 12.462C51.7289 10.956 53.3416 10.0283 55.0869 10.0283C58.8475 10.0283 61.1979 14.0847 59.3175 17.3298Z"
+                fill="black" />
             </svg>
           </div>
 
-          <h1 class="title">Password Required</h1>
+          <h1 class="title">
+            Password Required
+          </h1>
 
           <p class="description">
             This website is password protected. Please enter the password to view it.
           </p>
         </div>
 
-        <form @submit.prevent="handleSubmit" class="bottom-section">
-          <label for="password" class="label">PASSWORD</label>
+        <form
+          class="bottom-section"
+          @submit.prevent="handleSubmit">
+          <label
+            for="password"
+            class="label">PASSWORD</label>
           <input
             id="password"
             v-model="password"
@@ -26,10 +70,11 @@
             class="input-field"
             :class="{ 'input-error': error }"
             placeholder=""
-            @input="error = ''"
-          />
+            @input="error = ''">
 
-          <div v-if="error" class="error-message">
+          <div
+            v-if="error"
+            class="error-message">
             {{ error }}
           </div>
 
@@ -44,38 +89,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
-const password = ref<string>('')
-const error = ref<string>('')
-
-const handleSubmit = async () => {
-  error.value = ''
-
-  try {
-    const response = await $fetch('/api/__protected/verify', {
-      method: 'POST',
-      body: {
-        password: password.value,
-      },
-    })
-
-    if (response.success) {
-      await navigateTo('/')
-    }
-  } catch (err: any) {
-    error.value = err.data?.message || 'Invalid password. Please try again.'
-    password.value = ''
-  }
-}
-</script>
-
 <style scoped>
 .auth-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  background: linear-gradient(135deg, #D6EAFF 0%, #C2E0FF 35%, #D1E9FF 65%, #DCEDB8 100%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   position: relative;
 }
