@@ -8,6 +8,12 @@ export default defineEventHandler(async (event) => {
     return
   }
 
+  const path = event.path
+
+  if (path.startsWith('/__protected')) {
+    return
+  }
+
   const sessionToken = getCookie(event, 'nuxt-protected')
 
   if (!sessionToken) {
