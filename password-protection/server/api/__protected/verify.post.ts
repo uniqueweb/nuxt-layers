@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   setCookie(event, 'nuxt-protected', sessionValue, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'none',
     maxAge: 60 * 60 * 24 * 30,
     path: '/',
   })
